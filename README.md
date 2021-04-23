@@ -6,8 +6,8 @@
 
 Week of April 19
 
-- [ ] Create GitHub Repo
-- [ ] Create JSON format
+- [x] Create GitHub Repo
+- [x] Create JSON format
 
 Week of April 26
 
@@ -69,7 +69,7 @@ Week of April 19
 
 - [ ] Weekly code review
 - [ ] Memoradum documentation
-- [ ] have JSON plugin installed
+- [x] have JSON plugin installed
 
 Week of April 26
 
