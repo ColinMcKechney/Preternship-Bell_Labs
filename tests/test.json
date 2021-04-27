@@ -1,0 +1,32 @@
+{
+    "priorities" : {
+        "priority type 1" : {
+            "latency" : "100",
+            "bandwidth" : "100",
+            "reliability" : "100"
+        }
+    },
+
+    "nodes" : [
+        {
+            "name":"Hello",
+            "priority" : "2"
+
+        }
+    ],
+
+    "edges" : [
+        {
+            "source" : "Hello",
+            "destination" : "Hello",
+            "weights" : {
+                "latency" : "100",
+                "bandwidth" : "100",
+                "reliability" : "100"
+            }
+        }
+    ]
+
+    
+
+}
