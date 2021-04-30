@@ -34,6 +34,7 @@ int main(int argc, char *argv[]){
 
        if(argv[x][0] == '-'){
            //flags entered here
+           //unclear if we want flags anyway
            continue;
        }
 
@@ -49,26 +50,30 @@ int main(int argc, char *argv[]){
    json_in.close();
 
 
- /* TODO
- * test these two for loops, see if it creates the nodes and adds the edges correctly
- * need the edge class to be merged with the main branch
- * may need to remake Node class, I'll see how this works with the edge class
- */
+    //map that contains the different priority types by name
     std::unordered_map<std::string,std::unordered_map<std::string,int>> slice_types = j["priorities"].get<std::unordered_map<std::string,std::unordered_map<std::string,int>>>();
 
-    Graph g;
+    Graph g; 
+    //adding all the nodes to the graph
     for(std::unordered_map<std::string,int> n : j["nodes"].get<std::vector<std::unordered_map<std::string,int>>>()){
         g.addBlankNode({n["name"]});
     }
 
+    //adding all the edges to the graph
     for(std::unordered_map<std::string,int> e : j["edges"].get<std::vector<std::unordered_map<std::string,int>>>()){
         
         g.addEdge({e["slice_type"], slice_types[getSlice(e["slice_type"])], &g.verticies[e["source"]] , &g.verticies[e["destination"]]});
     } 
     
+    //for testing purposes only
+    std::cout << g << std::endl;
+
+    //TODO run mst algorithm and fork for each node
 }
 
 std::string getSlice(int slice){
+    //returns the string version of the slice that we need
+    //needed for the slice_types map
     switch(slice){
         case 1:
             return "mob_bband";
