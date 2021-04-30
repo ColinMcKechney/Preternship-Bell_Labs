@@ -9,10 +9,10 @@ CFLAGS = -m64 -std=c++11 -Weffc++ -O2 -g -Wall -Wextra -Wconversion -Wshadow -pe
 
 
 test: driver
-	$(shell $(EXE)/driver $(TEST)/test.json)
+	$(EXE)/driver $(TEST)/test.json
 
 driver : $(OBJ)/driver.o
-	$(shell mkdir $(EXE))
+	$(shell test -d $(EXE) || mkdir $(EXE))
 	$(CC) $(CFLAGS) -o exe/$@ $< -I single_include
 
 $(OBJ)/%.o : $(SRC)/%.cpp
