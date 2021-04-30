@@ -11,7 +11,7 @@ Week of April 19
 
 Week of April 26
 
-- [ ] Create Driver
+- [x] Create Driver
    - reading in JSON and constructing Nodes & Edges
 
 Week of May 3
