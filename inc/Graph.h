@@ -116,9 +116,9 @@ class Graph
 					}
 				}
 				Edge topEdge = prioQueue.top();
-				std::cout<<"Nodes: "<<!prioQueue.empty()<<"\n\n\n\n";
+				std::cout<<"Nodes: "<<(!prioQueue.empty() ? "Not Empty" : "Empty")<<"\n\n\n\n";
 				int oldNode = currentNode.node_id;
-				while(!prioQueue.empty() && visited[topEdge.destination->node_id])
+				while(!prioQueue.empty())
 				{
 					topEdge = prioQueue.top();
 					prioQueue.pop();
@@ -129,6 +129,7 @@ class Graph
 				}
 				if(currentNode.node_id == oldNode)
 				{
+					std::cout<<"Couldn't find a free node!";
 					break;
 				}
 				std::cout<<"\nIs node "<<currentNode.node_id<<" visited?: "<<visited[currentNode.node_id]<<std::endl;
@@ -157,15 +158,7 @@ class Graph
 			}
 			for(Node element : graph_in.verticies)
 			{
-				output<<"Node: "<<element.node_id<<"\n\tConnections: "<<std::endl;
-				output<<"\tNumber of edges: "<<element.node_edges.size();
-				for(Edge e : element.node_edges)
-				{
-					int edgeEnd = (e.destination)->node_id;
-					output<<std::endl<<"\t\t(Endpoint: "<<edgeEnd<<", Weight: "<<e.getWeight()<<") ";
-				}
-				output<<std::endl;
-				output<<std::endl;
+				output<<element<<std::endl;
 			}
 			return output;
 		}

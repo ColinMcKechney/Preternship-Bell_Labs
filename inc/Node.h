@@ -39,11 +39,14 @@ struct Node
 		
 		friend std::ostream& operator<<(std::ostream& output, Node& node_in)
 		{
-			output<<"ID:"<<node_in.node_id<<std::endl;
+			output<<"Node: "<<node_in.node_id<<"\n\tConnections: "<<std::endl;
+			output<<"\tNumber of edges: "<<node_in.node_edges.size();
 			for(Edge e : node_in.node_edges)
 			{
-				output<<"\tEdge - "<<e<<'\n';
+				int edgeEnd = (e.destination)->node_id;
+				output<<std::endl<<"\t\t(Endpoint: "<<edgeEnd<<", Weight: "<<e.getWeight()<<") ";
 			}
+			output<<std::endl;
 			return output;
 		}
 		bool operator!=(const Node rhs) const
