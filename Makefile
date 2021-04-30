@@ -5,7 +5,7 @@ PP := g++
 
 # CXXFLAGS are the compiler flages for when we compile C++ code in this course 
 FLAGS := -O2 -g -Wall -Wextra -Wconversion -Wshadow -pedantic -Werror
-CXXFLAGS := -m64 -std=c++11 -Weffc++ $(FLAGS)
+CXXFLAGS := -m64 -std=c++11 $(FLAGS)
 
 # Variables for Folders
 INC := inc
@@ -14,7 +14,7 @@ EXE := exe
 OBJ := obj
 
 
-# Command: make SortKLists - Find Kth Largest
+# Test to see if edges are working
 EdgeTestObjs := $(OBJ)/EdgeTest.o 
 
 EdgeTest: $(EdgeTestObjs)
@@ -23,6 +23,16 @@ EdgeTest: $(EdgeTestObjs)
 
 $(OBJ)/EdgeTest.o: $(SRC)/EdgeTest.cpp
 	$(PP) $(CXXFLAGS) -c $(SRC)/EdgeTest.cpp -o $@
+	
+# Test to see if graphs are working
+GraphTestObjs := $(OBJ)/GraphTest.o 
+
+GraphTest: $(GraphTestObjs)
+	$(PP) $(CXXFLAGS) -o $(EXE)/GraphTest $(GraphTestObjs)
+	./$(EXE)/GraphTest
+
+$(OBJ)/GraphTest.o: $(SRC)/GraphTest.cpp
+	$(PP) $(CXXFLAGS) -c $(SRC)/GraphTest.cpp -o $@
 	
 
 

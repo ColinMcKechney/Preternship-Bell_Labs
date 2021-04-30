@@ -1,10 +1,10 @@
 #ifndef EDGE_H
 #define EDGE_H
 
+#include "Node.h"
 #include <iostream>
 #include <cstdlib>
 #include <unordered_map>
-#include <limits>
 
 //Used to define the different newtwork slice types to identify which optimization method should be used
 enum NetworkSliceType
@@ -24,48 +24,50 @@ enum ParameterType
 	Mobility = 3,
 };
 
-class Edge
+struct Node;
+struct Edge
 {
 	private:
 		
 		NetworkSliceType sliceType; //Identifies how the weight is calculated
 		std::unordered_map<int, double> param; //Array of parameters to optimize the network slice
 		double weight; //Stores the weight so it isn't recalculated upon calling each time
-		//Node* destination; Will be implemented upon integration
-		//Node* begining;
 		
 		//Default funciton for error catching
-		double weight_NoSlice() 
+		double weight_NoSlice() const 
 		{
 			std::cout<<"No Slice Type Selected";
 			return 0;
 		}
 		//Functions that calculate the weight of the edge, simplified for now
 			//needs proper investigation once simulation is completed 
-		double weight_Broadband() 
+		double weight_Broadband()
 		{
 			return param[ParameterType::Latency];
 		}
-		double weight_MissionCritical() 
+		double weight_MissionCritical()
 		{
 			return param[ParameterType::Latency] + param[ParameterType::Reliability];
 		}
 		
 	public:
+		Node* begining;
+		Node* destination;
+		
 		//Default Constructor
-		Edge() : sliceType(NetworkSliceType::NoSlice), param(), weight() {}
+		Edge() : sliceType(NetworkSliceType::NoSlice), param(), weight(), begining(NULL), destination(NULL) {}
 		
 		//Constructors, allowing for multiple overloads but upon implementation, one will be chosed
-		Edge(const int type_in, const std::unordered_map<int, double> param_in) : sliceType((NetworkSliceType)type_in), param(param_in), weight() {getWeight(sliceType);}
-		Edge(const NetworkSliceType type_in, const std::unordered_map<int, double> param_in) : sliceType(type_in), param(param_in), weight() {getWeight(sliceType);} //Prefered to use for implementation
-		Edge(const int type_in, const double param_in[]) : sliceType((NetworkSliceType)type_in), param(), weight() {
+		Edge(const int type_in, const std::unordered_map<int, double> param_in, Node* start = NULL, Node* end = NULL) : sliceType((NetworkSliceType)type_in), param(param_in), weight(), begining(start), destination(end) {getWeight(sliceType);}
+		Edge(const NetworkSliceType type_in, const std::unordered_map<int, double> param_in, Node* start = NULL, Node* end = NULL) : sliceType(type_in), param(param_in), weight(), begining(start), destination(end) {getWeight(sliceType);} //Prefered to use for implementation
+		Edge(const int type_in, const double param_in[], Node* start = NULL, Node* end = NULL) : sliceType((NetworkSliceType)type_in), param(), weight(), begining(start), destination(end) {
 			for(int i = 0; i < numParameters; i++)
 			{
 				param[i] = param_in[i];
 			}
 			getWeight(sliceType);
 		}
-		Edge(const NetworkSliceType type_in, const double param_in[]) : sliceType(type_in), param(), weight() {
+		Edge(const NetworkSliceType type_in, const double param_in[], Node* start = NULL, Node* end = NULL) : sliceType(type_in), param(), weight(), begining(start), destination(end) {
 			for(int i = 0; i < numParameters; i++)
 			{
 				param[i] = param_in[i];
@@ -108,26 +110,35 @@ class Edge
 			output<<"Calculated Weight:"<<edge_in.getWeight()<<std::endl;
 			return output;
 		}
-		
-		bool operator<(const Edge& edge_in)
+		bool operator<(const Edge& edge_in) const
 		{
 			return getWeight() < edge_in.getWeight();
 		}
-		bool operator>(const Edge& edge_in)
+		bool operator>(const Edge& edge_in) const
 		{
 			return getWeight() > edge_in.getWeight();
 		}
-		bool operator==(const Edge& edge_in)
+		bool operator==(const Edge& edge_in) const
 		{
 			return getWeight() == edge_in.getWeight();
 		}
-		bool operator<=(const Edge& edge_in)
+		bool operator<=(const Edge& edge_in) const
 		{
 			return !(getWeight() > edge_in.getWeight());
 		}
-		bool operator>=(const Edge& edge_in)
+		bool operator>=(const Edge& edge_in) const
 		{
 			return !(getWeight() < edge_in.getWeight());
+		}
+		bool isSame(const Edge& edge_in) const
+		{
+			if(getWeight() == edge_in.getWeight()
+				&& begining == edge_in.begining
+				&& destination == edge_in.destination)
+			{
+				return true;
+			}
+			return false;
 		}
 };
 
