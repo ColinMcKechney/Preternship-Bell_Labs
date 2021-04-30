@@ -1,0 +1,4 @@
+g++ -m64 -std=c++11 -O2 -g -Wall -Wextra -Wconversion -Wshadow -pedantic -Werror -c src/GraphTest.cpp -o obj/GraphTest.o
+g++ -m64 -std=c++11 -O2 -g -Wall -Wextra -Wconversion -Wshadow -pedantic -Werror -o exe/GraphTest obj/GraphTest.o 
+./exe/GraphTest
+make: *** [GraphTest] Segmentation fault (core dumped)

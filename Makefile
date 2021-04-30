@@ -1,26 +1,59 @@
-INC = inc
-SRC = src
-OBJ = obj
+# This is the Makefile for the CSE 20312 course - Lab 06
+
+# G++ is for the GCC compiler for C++
+PP := g++
+
+# CXXFLAGS are the compiler flages for when we compile C++ code in this course 
+FLAGS := -O2 -g -Wall -Wextra -Wconversion -Wshadow -pedantic -Werror
+CXXFLAGS := -m64 -std=c++11 $(FLAGS)
+
+# Variables for Folders
+INC := inc
+SRC := src
+OBJ := obj
 TEST = tests
 EXE = exe
-CC = g++
-CFLAGS = -m64 -std=c++11 -Weffc++ -O2 -g -Wall -Wextra -Wconversion -Wshadow -pedantic -Werror
 
 
-
+# Test to see if edges are working
 test: driver
 	$(EXE)/driver $(TEST)/test.json
 
 driver : $(OBJ)/driver.o
-	$(shell test -d $(EXE) || mkdir $(EXE))
-	$(CC) $(CFLAGS) -o exe/$@ $< -I single_include
+	$(PP) $(CXXFLAGS) -o exe/$@ $< -I single_include
 
 $(OBJ)/%.o : $(SRC)/%.cpp
-	$(shell test -d $(OBJ) || mkdir $(OBJ))
-	$(CC) $(CFLAGS) -c -o $@ $< -I single_include
+	$(PP) $(CXXFLAGS) -c -o $@ $< -I single_include
 
+
+EdgeTestObjs := $(OBJ)/EdgeTest.o 
+
+EdgeTest: $(EdgeTestObjs)
+	$(PP) $(CXXFLAGS) -o $(EXE)/EdgeTest $(EdgeTestObjs)
+	$(EXE)/./EdgeTest
+
+#$(OBJ)/EdgeTest.o: $(SRC)/EdgeTest.cpp
+# $(PP) $(CXXFLAGS) -c $(SRC)/EdgeTest.cpp -o $@
+	
+# Test to see if graphs are working
+GraphTestObjs := $(OBJ)/GraphTest.o 
+
+GraphTest: $(GraphTestObjs)
+	$(PP) $(CXXFLAGS) -o $(EXE)/GraphTest $(GraphTestObjs)
+	./$(EXE)/GraphTest
+
+#$(OBJ)/GraphTest.o: $(SRC)/GraphTest.cpp
+#	$(PP) $(CXXFLAGS) -c $(SRC)/GraphTest.cpp -o $@
+	
+
+
+
+# make initialize
+# Will be called by grader to initialize your objects and executables folders
+initialize: 
+	mkdir $(OBJ) $(EXE)
+	
+
+# Make clean
 clean :
-	$(shell rm -r $(OBJ) $(EXE))
-
-
-
+	rm -rf $(OBJ)/* $(EXE)/*
