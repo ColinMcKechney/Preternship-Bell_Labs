@@ -1,29 +1,36 @@
 #include <nlohmann/json.hpp>
 #include "../inc/Node.h"
-//#include "inc/Edge.h"
+#include "../inc/Edge.h"
+#include "../inc/Graph.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <unordered_map>
+#include <sstream>
+#include <cstdlib>
 
 using json = nlohmann::json;
 
-
+std::string getSlice(int);
 
 int main(int argc, char *argv[]){
 
     /*TODO:
-    * Parse Command line arg (JSON file name)
-    * Read in JSON
-    * Create Nodes
-    * Create Edges
-    * Set Priorities
-    * Run MST on all the nodes
-    * Fork the MSTs
+    * Parse Command line arg (JSON file name)   - Incomplete
+    * Read in JSON                              - Complete
+    * Create Nodes                              - Complete
+    * Create Edges                              - Complete
+    * Set Priorities                            - Complete
+    * Run MST on all the nodes                  - Incomplete 
+    * Fork the MSTs                             - Incomplete
     */
    std::string json_name;
-   for(int x=1; x<argc;x++){
+   json j;
+   if(argc == 1)
+        return 1;
+   for(int x=1; x<argc && json_name.empty();x++){
 
        if(argv[x][0] == '-'){
            //flags entered here
@@ -31,19 +38,48 @@ int main(int argc, char *argv[]){
        }
 
        json_name = argv[x];
-
    }
 
    //get FILE * from json_name
    std::ifstream json_in(json_name);
-   json j;
+   
+   //read file into json
    json_in >> j;
+   //close file
+   json_in.close();
 
 
-    std::cout << j;
+ /* TODO
+ * test these two for loops, see if it creates the nodes and adds the edges correctly
+ * need the edge class to be merged with the main branch
+ * may need to remake Node class, I'll see how this works with the edge class
+ */
+    std::unordered_map<std::string,std::unordered_map<std::string,int>> slice_types = j["priorities"].get<std::unordered_map<std::string,std::unordered_map<std::string,int>>>();
 
+    Graph g;
+    for(std::unordered_map<std::string,int> n : j["nodes"].get<std::vector<std::unordered_map<std::string,int>>>()){
+        g.addBlankNode({n["name"]});
+    }
 
-
+    for(std::unordered_map<std::string,int> e : j["edges"].get<std::vector<std::unordered_map<std::string,int>>>()){
+        
+        g.addEdge({e["slice_type"], slice_types[getSlice(e["slice_type"])], &g.verticies[e["source"]] , &g.verticies[e["destination"]]});
+    } 
     
-    
+}
+
+std::string getSlice(int slice){
+    switch(slice){
+        case 1:
+            return "mob_bband";
+            break;
+        case 2:
+            return "rel_low_lat";
+            break;
+        case 3:
+            return "mach_to_mach";
+            break;
+        default:
+            return "NoSlice";
+    }
 }
