@@ -24,7 +24,7 @@ enum ParameterType
 	Mobility = 3,
 };
 
-struct Node;
+struct Node; //Preinitialize Node class since there's recursive definitions -- Will take this out and transfer it to int, as of now no need to store node pointers
 struct Edge
 {
 	private:
@@ -51,7 +51,7 @@ struct Edge
 		}
 		
 	public:
-		Node* begining;
+		Node* begining; //Stores the endpoints of the edge, see above
 		Node* destination;
 		
 		//Default Constructor
@@ -110,6 +110,7 @@ struct Edge
 			output<<"Calculated Weight:"<<edge_in.getWeight()<<std::endl;
 			return output;
 		}
+		//Overloaded operators
 		bool operator<(const Edge& edge_in) const
 		{
 			return getWeight() < edge_in.getWeight();
@@ -130,6 +131,7 @@ struct Edge
 		{
 			return !(getWeight() < edge_in.getWeight());
 		}
+		//IsSame is used to identify exact same edges that aren't the same object, for unique edges in nodes
 		bool isSame(const Edge& edge_in) const
 		{
 			if(getWeight() == edge_in.getWeight()

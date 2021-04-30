@@ -2,27 +2,28 @@
 #define NODE_H
 
 #include "Edge.h"
-#include <algorithm>
 #include <vector>
 
 struct Node
 {
-	public:		
+	public:	
+		int node_id; //Used for graph traversal
+		std::vector<Edge> node_edges; //Dynamic list of edges
 		
-		int node_id;
-		std::vector<Edge> node_edges;
+		//Default constructor - SHOULD NOT BE USED FOR INSTANSIATED NODES
+		Node() : node_id(-1), node_edges() { }
 		
-		Node() : node_id(), node_edges() { }
-		
+		//Overloaded constructors for specifying an id with an option for preset edges as well (CopyC?)
 		Node(const int name) : node_id(name), node_edges() { }
 		Node(const int name, const std::vector<Edge> edges) : node_id(name), node_edges() 
 		{
 			for(Edge e : edges)
 			{
-				addEdge(e);
+				addEdge(e); //Add the edges like this so that they are properly anchored to this node
 			}
 		}
 		
+		//Adds the edge to the node list and anchor it to this node
 		void addEdge(Edge edge_in)
 		{
 			edge_in.begining = this;
@@ -37,6 +38,7 @@ struct Node
 			node_edges.push_back(edge_in);
 		}
 		
+		//Overloaded operators
 		friend std::ostream& operator<<(std::ostream& output, Node& node_in)
 		{
 			output<<"Node: "<<node_in.node_id<<"\n\tConnections: "<<std::endl;
@@ -49,11 +51,11 @@ struct Node
 			output<<std::endl;
 			return output;
 		}
+		//Nodes are only the same if they are the same object
 		bool operator!=(const Node rhs) const
 		{
 			return this != (void *)&rhs;
 		}
-		
 		bool operator==(const Node rhs) const
 		{
 			return this == (void *)&rhs;
