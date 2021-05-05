@@ -30,7 +30,7 @@ Week of April 26
 
 Week of May 3
 
-- [ ] Create visualizations of each graph optimized
+- [X] Create visualizations of each graph optimized
 
 ### Ian
 

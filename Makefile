@@ -5,7 +5,7 @@ PP := g++
 
 # CXXFLAGS are the compiler flages for when we compile C++ code in this course 
 FLAGS := -O2 -g -Wall -Wextra -Wconversion -Wshadow -pedantic -Werror
-CXXFLAGS := -m64 -std=c++11 $(FLAGS)
+CXXFLAGS := -m64 -std=c++11 -lX11 $(FLAGS)
 
 # Variables for Folders
 INC := inc
@@ -34,7 +34,16 @@ GraphTest: $(GraphTestObjs)
 $(OBJ)/GraphTest.o: $(SRC)/GraphTest.cpp
 	$(PP) $(CXXFLAGS) -c $(SRC)/GraphTest.cpp -o $@
 	
+# Test to see if graphics work
+GraphicsTestObjects := $(OBJ)/GraphicsTest.o
 
+GraphicsTest: $(GraphicsTestObjects)
+	$(PP) $(CXXFLAGS) $(GraphicsTestObjects) -o $(EXE)/GraphicsTest
+	./$(EXE)/GraphicsTest
+
+$(OBJ)/GraphicsTest.o: $(SRC)/GraphicsTest.cpp
+	$(PP) $(CXXFLAGS) -c $(SRC)/GraphicsTest.cpp -o $@
+	
 
 
 # make initialize
