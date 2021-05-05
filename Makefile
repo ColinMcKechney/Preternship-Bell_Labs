@@ -10,19 +10,30 @@ CXXFLAGS := -m64 -std=c++11 -lX11 $(FLAGS)
 # Variables for Folders
 INC := inc
 SRC := src
-EXE := exe
 OBJ := obj
+TEST = tests
+EXE = exe
 
 
 # Test to see if edges are working
+test: driver
+	$(EXE)/driver $(TEST)/test.json
+
+driver : $(OBJ)/driver.o
+	$(PP) $(CXXFLAGS) -o exe/$@ $< -I single_include
+
+$(OBJ)/%.o : $(SRC)/%.cpp
+	$(PP) $(CXXFLAGS) -c -o $@ $< -I single_include
+
+
 EdgeTestObjs := $(OBJ)/EdgeTest.o 
 
 EdgeTest: $(EdgeTestObjs)
 	$(PP) $(CXXFLAGS) -o $(EXE)/EdgeTest $(EdgeTestObjs)
 	$(EXE)/./EdgeTest
 
-$(OBJ)/EdgeTest.o: $(SRC)/EdgeTest.cpp
-	$(PP) $(CXXFLAGS) -c $(SRC)/EdgeTest.cpp -o $@
+#$(OBJ)/EdgeTest.o: $(SRC)/EdgeTest.cpp
+# $(PP) $(CXXFLAGS) -c $(SRC)/EdgeTest.cpp -o $@
 	
 # Test to see if graphs are working
 GraphTestObjs := $(OBJ)/GraphTest.o 
@@ -31,8 +42,8 @@ GraphTest: $(GraphTestObjs)
 	$(PP) $(CXXFLAGS) -o $(EXE)/GraphTest $(GraphTestObjs)
 	./$(EXE)/GraphTest
 
-$(OBJ)/GraphTest.o: $(SRC)/GraphTest.cpp
-	$(PP) $(CXXFLAGS) -c $(SRC)/GraphTest.cpp -o $@
+#$(OBJ)/GraphTest.o: $(SRC)/GraphTest.cpp
+#	$(PP) $(CXXFLAGS) -c $(SRC)/GraphTest.cpp -o $@
 	
 # Test to see if graphics work
 GraphicsTestObjects := $(OBJ)/GraphicsTest.o

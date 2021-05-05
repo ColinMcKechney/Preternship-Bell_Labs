@@ -38,22 +38,46 @@
             "latency" : 4,
             "reliability" : 4,
             "mobility" : 4
+        },
+        "NoSlice" : {
+            "delay" : 0,
+            "periodicity" : 0,
+            "throughput" : 0,
+            "energy_eff" : 0,
+            "mission_crit_support" : 0,
+            "max_conn" : 0,
+            "packet_size" : 0,
+            "packet_loss" : 0,
+            "latency" : 0,
+            "reliability" : 0,
+            "mobility" : 0
         }
     },
 
     "nodes" : [
         {
             "name":0,
-            "slice_type" : 0
+            "priority" : 0
+
+        },
+
+        {
+            "name":1,
+            "priority" : 2
 
         }
     ],
 
-    "edges" : [
+    "edges" :  [
         {
             "source" : 0,
             "destination" : 1,
-            "slice_type" : 0
+            "slice_type" : 1
+        },
+        {
+            "source" : 1,
+            "destination" : 0,
+            "slice_type" : 2
         }
     ]
 

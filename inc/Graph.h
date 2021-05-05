@@ -173,7 +173,7 @@ class Graph
 
 
 		//Output overload
-		friend std::ostream& operator<<(std::ostream& output, Graph& graph_in)
+		friend std::ostream& operator<<(std::ostream& output, const Graph& graph_in)
 		{
 			if(graph_in.vertexCount == 0)
 			{
