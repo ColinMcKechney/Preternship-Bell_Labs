@@ -73,6 +73,11 @@
             "source" : 0,
             "destination" : 1,
             "slice_type" : 1
+        },
+        {
+            "source" : 1,
+            "destination" : 0,
+            "slice_type" : 2
         }
     ]
 
