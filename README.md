@@ -11,7 +11,7 @@ Week of April 19
 
 Week of April 26
 
-- [ ] Create Driver
+- [x] Create Driver
    - reading in JSON and constructing Nodes & Edges
 
 Week of May 3
@@ -22,11 +22,11 @@ Week of May 3
 
 Week of April 19
 
-- [X] Create edge classes
+- [x] Create edge classes
 
 Week of April 26
 
-- [X] Write MST algorithm
+- [x] Write MST algorithm
 
 Week of May 3
 
