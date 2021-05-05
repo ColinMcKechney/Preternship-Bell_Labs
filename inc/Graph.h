@@ -6,11 +6,11 @@
 
 class Graph
 {
-	private:
+	public:
+	
 		std::vector<Node> verticies; //Vector containing all the Nodes
 		int vertexCount; //Number of nodes in the graph
-	
-	public:
+		
 		//Default constructor, all graphs are constructed from scratch
 		Graph() : verticies(), vertexCount(0) {}
 		
@@ -49,8 +49,8 @@ class Graph
 		{
 			verticies[start].addEdge(edge_in);
 		}
-		//addEdgeMST creates a double sided node instead of a single
-		void addEdgeMST(const Edge edge_in, int start, int end)
+		//addEdgeDouble creates a double sided node instead of a single
+		void addEdgeDouble(const Edge edge_in, int start, int end)
 		{
 			Edge newEdge1 = edge_in;
 			newEdge1.destination = &verticies[end];
@@ -58,9 +58,19 @@ class Graph
 			Edge newEdge2 = edge_in;
 			newEdge2.destination = &verticies[start];
 			verticies[end].addEdge(newEdge2);
-			std::cout<<"\nAdding edge:\n";
-			std::cout<<newEdge1;
-			std::cout<<"\n\n";
+			//std::cout<<"\nAdding edge:\n";
+			//std::cout<<newEdge1;
+			//std::cout<<"\n\n";
+		}
+		//addEdgeMST creates a single sided node for visualization purposes
+		void addEdgeMST(const Edge edge_in, int start, int end)
+		{
+			Edge newEdge1 = edge_in;
+			newEdge1.destination = &verticies[end];
+			verticies[start].addEdge(newEdge1);
+			//std::cout<<"\nAdding edge:\n";
+			//std::cout<<newEdge1;
+			//std::cout<<"\n\n";
 		}
 		
 		//Calculates and returns a new graph with minimized path weight between nodes
@@ -97,7 +107,7 @@ class Graph
 			visited[0] = true;
 			do //First run will always complete unless there is no nodes, in which case there is no graph!
 			{
-				std::cout<<std::endl<<"Current Node: "<<currentNode<<std::endl; //Verbose testing
+				//std::cout<<std::endl<<"Current Node: "<<currentNode<<std::endl; //Verbose testing
 				//Checks all edges in this node and identifies that the node has been checked
 				int nodeId = currentNode.node_id;
 				visited[nodeId] = true;
@@ -105,10 +115,10 @@ class Graph
 				Edge edgeLowest;
 				for(Edge e : currentNode.node_edges)
 				{
-					std::cout<<"Checking edge ("<<e.begining->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
+					//std::cout<<"Checking edge ("<<e.begining->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
 					if(lowestWeights[nodeId] > e.getWeight())
 					{
-						std::cout<<"Lower than "<<lowestWeights[nodeId]; //Verbose testing
+						//std::cout<<"Lower than "<<lowestWeights[nodeId]; //Verbose testing
 						lowestWeights[nodeId] = e.getWeight();
 						edgeLowest = e;
 					}
@@ -118,34 +128,34 @@ class Graph
 				{
 					if(edgeLowest.isSame(e)) //If this edge is the lowest, put it in the final edge and don't put it in queue
 					{
-						std::cout<<"Found edge ("<<e.begining->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
+						//std::cout<<"Found edge ("<<e.begining->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
 						finalEdges[nodeId] = e;
 					} else if(!visited[e.destination->node_id]) //If the ddestination node hasn't already been visited, put it in the queue
 					{
-						std::cout<<"Pushing edge ("<<e.begining->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
+						//std::cout<<"Pushing edge ("<<e.begining->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
 						prioQueue.push(e);
 					} else //If the node has been visited, no need to put it in queue
 					{
-						std::cout<<"Already checked ("<<e.begining->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
+						//std::cout<<"Already checked ("<<e.begining->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
 					}
 				}
 				//Checks for the next node to use
 				Edge topEdge;
-				std::cout<<"Nodes: "<<(!prioQueue.empty() ? "Not Empty" : "Empty")<<"\n\n\n\n";
+				//std::cout<<"Nodes: "<<(!prioQueue.empty() ? "Not Empty" : "Empty")<<"\n\n\n\n";
 				int oldNode = currentNode.node_id;
 				while(!prioQueue.empty() && visited[currentNode.node_id]) //Continue until there is no more PQ or finds a node that hasn't been visited
 				{
 					topEdge = prioQueue.top();
 					prioQueue.pop();
 					currentNode = verticies[topEdge.destination->node_id];
-					std::cout<<"\nTrying to check node "<<currentNode.node_id<<std::endl; //Verbose testing
+					//std::cout<<"\nTrying to check node "<<currentNode.node_id<<std::endl; //Verbose testing
 				}
 				if(currentNode.node_id == oldNode) //If there is no new nodes in the prioQueue, then we're all done! (Technically not needed but used for testing purposes
 				{
-					std::cout<<"Couldn't find a free node!";
+					//std::cout<<"Couldn't find a free node!";
 					break;
 				}
-				std::cout<<"\nIs node "<<currentNode.node_id<<" visited?: "<<visited[currentNode.node_id]<<std::endl; //Verbose testing
+				//std::cout<<"\nIs node "<<currentNode.node_id<<" visited?: "<<visited[currentNode.node_id]<<std::endl; //Verbose testing
 			} while(!prioQueue.empty() || !visited[currentNode.node_id]); //Continue until the queue is empty or no new nodes could be found
 			//Create the new edges on the MST graph
 			for(int i = 0; i < vertexCount; i++)
@@ -155,7 +165,7 @@ class Graph
 					graph_out.addEdgeMST(finalEdges.at(i), i, (finalEdges.at(i).destination)->node_id);
 				} else
 				{
-					std::cout<<"Does not contain an edge with node "<<i<<std::endl; //Verbose testing
+					//std::cout<<"Does not contain an edge with node "<<i<<std::endl; //Verbose testing
 				}
 			}
 			return graph_out;
