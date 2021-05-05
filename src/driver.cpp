@@ -56,7 +56,7 @@ int main(int argc, char *argv[]){
     Graph g; 
     //adding all the nodes to the graph
     for(std::unordered_map<std::string,int> n : j["nodes"].get<std::vector<std::unordered_map<std::string,int>>>()){
-        g.addBlankNode({n["name"]});
+        g.addBlankNode({n["name"]}); //node needs  a section about what network slice it wants, should be added later
     }
 
     //adding all the edges to the graph
@@ -66,9 +66,9 @@ int main(int argc, char *argv[]){
     } 
     
     //for testing purposes only
-    std::cout << g << std::endl;
+    std::cout << g.MST() << std::endl;
 
-    //TODO run mst algorithm and fork for each node
+    //TODO run mst algorithm for each node
 }
 
 std::string getSlice(int slice){
