@@ -86,12 +86,12 @@ void draw_graph(Display *dis, Window win, GC gc, Graph graph)
 		{
 			sprintf(text, "N%d", v_placed + 1);
 			//Draw node
-			XSetForeground(dis, gc, 0);
-			XFillRectangle(dis, win, gc, x * x_scale - rect_size, y * y_scale - rect_size, rect_size, rect_size);
+			XSetForeground(dis, gc, RGB(210,210,210));
+			XFillArc(dis, win, gc, x * x_scale - rect_size, y * y_scale - rect_size, rect_size, rect_size, 0, 360 * 64);
 			std::cout<<"Placing at "<<x * x_scale - rect_size<<", "<<y * y_scale - rect_size<<std::endl;
 			
 			//Draw id text
-			XSetForeground(dis, gc, 255);
+			XSetForeground(dis, gc, 0);
 			XDrawString(dis, win, gc, x * x_scale - rect_size / 2, y * y_scale - rect_size / 2, text, (int) strlen(text));
 			node_placements[v_placed][0] = x;
 			node_placements[v_placed][1] = y;
