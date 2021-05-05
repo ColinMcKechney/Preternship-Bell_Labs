@@ -22,15 +22,15 @@ Week of May 3
 
 Week of April 19
 
-- [ ] Create edge classes
+- [X] Create edge classes
 
 Week of April 26
 
-- [ ] Write MST algorithm
+- [X] Write MST algorithm
 
 Week of May 3
 
-- [ ] Create visualizations of each graph optimized
+- [X] Create visualizations of each graph optimized
 
 ### Ian
 
