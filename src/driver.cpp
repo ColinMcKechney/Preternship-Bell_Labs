@@ -2,6 +2,7 @@
 #include "../inc/Node.h"
 #include "../inc/Edge.h"
 #include "../inc/Graph.h"
+#include "../inc/Graphics.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -66,9 +67,19 @@ int main(int argc, char *argv[]){
     } 
     
     //for testing purposes only
-    std::cout << g.MST() << std::endl;
+    std::cout << g << std::endl;
 
     //TODO run mst algorithm for each node
+    Graph mst = g.MST();
+    Window win;
+    GC gc;
+    Display *dis = create_window(win,gc);
+
+    draw_graph(dis,win,gc,mst);
+    hold_window(dis,win);
+    draw_graph(dis,win,gc,g);
+    hold_window(dis,win);
+    close_window(dis,win,gc);
 }
 
 std::string getSlice(int slice){
