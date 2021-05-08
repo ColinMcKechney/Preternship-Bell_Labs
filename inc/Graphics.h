@@ -45,8 +45,7 @@ Display* create_window(Window& win, GC& gc)
 void close_window(Display *dis, Window& win, GC& gc) {
 	XFreeGC(dis, gc);
 	XDestroyWindow(dis,win);
-	XCloseDisplay(dis);	
-	exit(0);				
+	XCloseDisplay(dis);					
 }
 
 void hold_window(Display *dis, Window& win)
@@ -114,17 +113,17 @@ void draw_graph(Display *dis, Window win, GC gc, Graph graph)
 		{
 			//--------------------------------------------For testing, must be resolved! (Could already be resolved in new version)
 			//Since I add edges as double sided, the graph is very messy, this takes out every other edge
-			if(prevent_double_map.count(e.begining->node_id) > 0 && prevent_double_map.at(e.begining->node_id) == e.destination->node_id) { continue; }
-			else { prevent_double_map.insert({e.destination->node_id, e.begining->node_id}); }
+			if(prevent_double_map.count(e.beginning->node_id) > 0 && prevent_double_map.at(e.beginning->node_id) == e.destination->node_id) { continue; }
+			else { prevent_double_map.insert({e.destination->node_id, e.beginning->node_id}); }
 			//--------------------------------------------For testing, must be resolved!
 			
 			//Get v1
-			v1x = node_placements[e.begining->node_id][0] * x_scale - rect_size /2;
-			v1y = node_placements[e.begining->node_id][1] * y_scale - rect_size /2;
+			v1x = node_placements[e.beginning->node_id][0] * x_scale - rect_size /2;
+			v1y = node_placements[e.beginning->node_id][1] * y_scale - rect_size /2;
 			//Get v2
 			v2x = node_placements[e.destination->node_id][0] * x_scale - rect_size /2;
 			v2y = node_placements[e.destination->node_id][1] * y_scale - rect_size /2;
-			std::cout<<"Drawing edge from node "<<e.begining->node_id<<" to node "<<e.destination->node_id<<std::endl;
+			std::cout<<"Drawing edge from node "<<e.beginning->node_id<<" to node "<<e.destination->node_id<<std::endl;
 			double slope = (v2x - v1x != 0) ? (double)(v2y - v1y) / (double)(v2x - v1x) : 999.0; //Assumes that there won't be a line with 999 slope, would require 999^2 nodes (a lot)
 			if(slope_map.count(slope) > 0) //There already is a line with this slope
 			{
