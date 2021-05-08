@@ -54,6 +54,7 @@ int main(int argc, char *argv[]){
     //map that contains the different priority types by name
     std::unordered_map<std::string,std::unordered_map<std::string,int>> slice_types = j["priorities"].get<std::unordered_map<std::string,std::unordered_map<std::string,int>>>();
 
+
     Graph g; 
     //adding all the nodes to the graph
     for(std::unordered_map<std::string,int> n : j["nodes"].get<std::vector<std::unordered_map<std::string,int>>>()){
@@ -64,22 +65,28 @@ int main(int argc, char *argv[]){
     for(std::unordered_map<std::string,int> e : j["edges"].get<std::vector<std::unordered_map<std::string,int>>>()){
         
         g.addEdge({e["slice_type"], slice_types[getSlice(e["slice_type"])], &g.verticies[e["source"]] , &g.verticies[e["destination"]]});
+
     } 
+    std::cout << g << std::endl;
     
     //for testing purposes only
-    std::cout << g << std::endl;
 
     //TODO run mst algorithm for each node
-    Graph mst = g.MST();
+    int startNode =0;
+    scanf("%d",&startNode);
     Window win;
     GC gc;
     Display *dis = create_window(win,gc);
-
-    draw_graph(dis,win,gc,mst);
-    hold_window(dis,win);
-    draw_graph(dis,win,gc,g);
-    hold_window(dis,win);
-    close_window(dis,win,gc);
+    while(startNode >= 0 && startNode < g.vertexCount){ 
+        Graph mst = g.MST(startNode);
+        //draw_graph(dis,win,gc,mst);
+        //hold_window(dis,win);
+        //draw_graph(dis,win,gc,g);
+        //hold_window(dis,win);
+        std::cout << mst << std::endl; 
+        scanf("%d",&startNode);  
+    } 
+    //close_window(dis,win,gc);
 }
 
 std::string getSlice(int slice){
