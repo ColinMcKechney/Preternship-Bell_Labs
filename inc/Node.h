@@ -8,25 +8,27 @@ struct Node
 {
 	public:	
 		int node_id; //Used for graph traversal
+		int priority;
 		std::vector<Edge> node_edges; //Dynamic list of edges
 		
 		//Default constructor - SHOULD NOT BE USED FOR INSTANSIATED NODES
 		Node() : node_id(-1), node_edges() { }
 		
 		//Overloaded constructors for specifying an id with an option for preset edges as well (CopyC?)
-		Node(const int name) : node_id(name), node_edges() { }
-		Node(const int name, const std::vector<Edge> edges) : node_id(name), node_edges() 
+		Node(const int name) : node_id(name), priority(), node_edges() { }
+		Node(const int name, const std::vector<Edge> edges) : node_id(name), priority(), node_edges() 
 		{
 			for(Edge e : edges)
 			{
 				addEdge(e); //Add the edges like this so that they are properly anchored to this node
 			}
 		}
+		Node(const int name, const int pri) : node_id(name), priority(pri), node_edges(){}
 		
 		//Adds the edge to the node list and anchor it to this node
 		void addEdge(Edge edge_in)
 		{
-			edge_in.begining = this;
+			edge_in.beginning = this;
 			//Only add unique edges
 			for(Edge e : node_edges)
 			{
