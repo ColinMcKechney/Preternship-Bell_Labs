@@ -50,22 +50,8 @@ void close_window(Display *dis, Window& win, GC& gc) {
 
 void hold_window(Display *dis, Window& win)
 {
-	XEvent event;
-	KeySym key;
-	char text[255];
-
-	while(1)
-	{
-		XNextEvent(dis, &event);
-		if (event.type == KeyPress && XLookupString(&event.xkey, text, 255, &key, 0) == 1)
-		{
-			if (text[0] == 'q') {
-				XClearWindow(dis, win);
-				XMapRaised(dis, win);
-				return;
-			}
-		}
-	}
+	std::string buffer = "";
+	std::cin>>buffer; //Waits until first input then exits, could honestly just put this in main
 }
 
 void draw_graph(Display *dis, Window win, GC gc, Graph graph)
