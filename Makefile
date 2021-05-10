@@ -4,7 +4,7 @@
 PP := g++
 
 # CXXFLAGS are the compiler flages for when we compile C++ code in this course 
-FLAGS := -O2 -g -Wall -Wextra -Wconversion -Wshadow -pedantic
+FLAGS := -O2 -g -Wall -Wextra -Wconversion  -pedantic
 CXXFLAGS := -m64 -std=c++11 -lX11 $(FLAGS)
 
 # Variables for Folders
@@ -54,6 +54,16 @@ GraphicsTest: $(GraphicsTestObjects)
 
 $(OBJ)/GraphicsTest.o: $(SRC)/GraphicsTest.cpp
 	$(PP) $(CXXFLAGS) -c $(SRC)/GraphicsTest.cpp -o $@
+	
+# Test to see if graphics work
+FinalTest := $(OBJ)/FinalT.o
+
+FinalT: $(FinalTest)
+	$(PP) $(CXXFLAGS) $(FinalTest) -o $(EXE)/FinalT
+	./$(EXE)/FinalT tests/test.json
+
+$(OBJ)/FinalT.o: $(SRC)/driver.cpp
+	$(PP) $(CXXFLAGS) -c $(SRC)/driver.cpp -o $@
 	
 
 

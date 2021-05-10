@@ -1,4 +1,4 @@
-#include <nlohmann/json.hpp>
+#include "../single_include/nlohmann/json.hpp"
 #include "../inc/Node.h"
 #include "../inc/Edge.h"
 #include "../inc/Graph.h"
@@ -58,6 +58,7 @@ int main(int argc, char *argv[]){
     Graph g; 
     //adding all the nodes to the graph
     for(std::unordered_map<std::string,int> n : j["nodes"].get<std::vector<std::unordered_map<std::string,int>>>()){
+		std::cout<<n["name"];
         g.addBlankNode({n["name"]}); //node needs  a section about what network slice it wants, should be added later
     }
 
@@ -79,14 +80,17 @@ int main(int argc, char *argv[]){
     Display *dis = create_window(win,gc);
     while(startNode >= 0 && startNode < g.vertexCount){ 
         Graph mst = g.MST(startNode);
-        //draw_graph(dis,win,gc,mst);
-        //hold_window(dis,win);
-        //draw_graph(dis,win,gc,g);
-        //hold_window(dis,win);
+        draw_graph(dis,win,gc,mst);
+        hold_window(dis,win);
+        Graph mst2 = g.MST2();
+        draw_graph(dis,win,gc,mst2);
+        hold_window(dis,win);
+        draw_graph(dis,win,gc,g);
+        hold_window(dis,win);
         std::cout << mst << std::endl; 
         scanf("%d",&startNode);  
     } 
-    //close_window(dis,win,gc);
+    close_window(dis,win,gc);
 }
 
 std::string getSlice(int slice){

@@ -61,6 +61,7 @@ void hold_window(Display *dis, Window& win)
 		{
 			if (text[0] == 'q') {
 				XClearWindow(dis, win);
+				XMapRaised(dis, win);
 				return;
 			}
 		}
@@ -87,7 +88,7 @@ void draw_graph(Display *dis, Window win, GC gc, Graph graph)
 			//Draw node
 			XSetForeground(dis, gc, RGB(210,210,210));
 			XFillArc(dis, win, gc, x * x_scale - rect_size, y * y_scale - rect_size, rect_size, rect_size, 0, 360 * 64);
-			std::cout<<"Placing at "<<x * x_scale - rect_size<<", "<<y * y_scale - rect_size<<std::endl;
+			//std::cout<<"Placing at "<<x * x_scale - rect_size<<", "<<y * y_scale - rect_size<<std::endl;
 			
 			//Draw id text
 			XSetForeground(dis, gc, 0);
@@ -117,13 +118,14 @@ void draw_graph(Display *dis, Window win, GC gc, Graph graph)
 			else { prevent_double_map.insert({e.destination->node_id, e.beginning->node_id}); }
 			//--------------------------------------------For testing, must be resolved!
 			
+			//std::cout<<"Getting midpoints from nodes"<<e.beginning->node_id<<","<<e.destination->node_id<<"\n\n";
 			//Get v1
 			v1x = node_placements[e.beginning->node_id][0] * x_scale - rect_size /2;
 			v1y = node_placements[e.beginning->node_id][1] * y_scale - rect_size /2;
 			//Get v2
 			v2x = node_placements[e.destination->node_id][0] * x_scale - rect_size /2;
 			v2y = node_placements[e.destination->node_id][1] * y_scale - rect_size /2;
-			std::cout<<"Drawing edge from node "<<e.beginning->node_id<<" to node "<<e.destination->node_id<<std::endl;
+			//std::cout<<"Drawing edge from node "<<e.beginning->node_id<<" to node "<<e.destination->node_id<<std::endl;
 			double slope = (v2x - v1x != 0) ? (double)(v2y - v1y) / (double)(v2x - v1x) : 999.0; //Assumes that there won't be a line with 999 slope, would require 999^2 nodes (a lot)
 			if(slope_map.count(slope) > 0) //There already is a line with this slope
 			{
@@ -132,23 +134,23 @@ void draw_graph(Display *dis, Window win, GC gc, Graph graph)
 				//Might move to seperate function in graphics.h to clean up main
 				double dx = v2x - v1x;
 				double dy = v2y - v1y;
-				std::cout<<"COUNT IS "<<slope_map.at(slope)<<std::endl;
+				//std::cout<<"COUNT IS "<<slope_map.at(slope)<<std::endl;
 				double curve = (slope_map.at(slope) % 2 == 0 ? 1 : -1) * (4 - curve_factor * (slope_map.at(slope) / 2));
 				double originx = (v1x + v2x)/2 - dy * curve;
 				double originy = (v1y + v2y)/2 + dx * curve;
 				double rad = sqrt(pow(v1x - originx, 2) + pow(v1y - originy, 2));
 				//Must get the first point on the unit circle going cw
 				double angle1 = (acos((originx - v1x) / rad)) * ((originy < v1y) ? 1 : -1) + M_PI;//((originy < v1y) ? 1 : -1);
-				///if(angle1 < 0) angle1 += 1 * M_PI;
+				//if(angle1 < 0) angle1 += 1 * M_PI;
 				double angle2 = (acos((originx - v2x) / rad)) * ((originy < v2y) ? 1 : -1) + M_PI;//((originy < v2y) ? 1 : -1);
 				//if(angle2 < 0) angle2 += 1 * M_PI;
 				double start_angle = (angle1 < angle2 ? angle1 : angle2) * (180 * 64 / M_PI);
 				double slice = ((angle1 > angle2 ? angle1 : angle2) - (angle1 < angle2 ? angle1 : angle2)) * (180 * 64 / M_PI); //Total angle of the slice
 				XSetForeground(dis, gc, RGB(255 - (255 /(slope_map.at(slope) + 1)), 0, 0 ) );
 				XDrawArc(dis, win, gc, (int)(originx - rad), (int)(originy - rad), (int)rad*2, (int)rad*2, (int)start_angle, (int)slice);
-				std::cout<<"Drawing circle: ("<<originx<<", "<<originy<<") r = "<<rad<<" between angle "<<start_angle / 64<<" and "<<(start_angle + slice) / 64<<std::endl;
-				std::cout<<"Points should be: ("<<v1x<<", "<<v1y<<") and ("<<v2x<<", "<<v2y<<")\n";
-				std::cout<<"Points got: ("<<originx + cos(start_angle / (64 * 180 / M_PI)) * rad<<", "<<originy - sin(start_angle / (64 * 180 / M_PI)) * rad<<") and ("<<originx + cos((start_angle + slice) / (64 * 180 / M_PI)) * rad<<", "<<originy - sin((start_angle + slice) / (64 * 180 / M_PI)) * rad<<")\n";
+				//std::cout<<"Drawing circle: ("<<originx<<", "<<originy<<") r = "<<rad<<" between angle "<<start_angle / 64<<" and "<<(start_angle + slice) / 64<<std::endl;
+				//std::cout<<"Points should be: ("<<v1x<<", "<<v1y<<") and ("<<v2x<<", "<<v2y<<")\n";
+				//std::cout<<"Points got: ("<<originx + cos(start_angle / (64 * 180 / M_PI)) * rad<<", "<<originy - sin(start_angle / (64 * 180 / M_PI)) * rad<<") and ("<<originx + cos((start_angle + slice) / (64 * 180 / M_PI)) * rad<<", "<<originy - sin((start_angle + slice) / (64 * 180 / M_PI)) * rad<<")\n";
 				slope_map.at(slope)++;
 			} else //Straight line much easier, make entry in map
 			{
