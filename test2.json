@@ -1,0 +1,64 @@
+
+{
+    "priorities" : {
+        "mob_bband" : {
+            "delay" : 0,
+            "periodicity" : 2,
+            "throughput" : 3,
+            "energy_eff" : 3,
+            "mission_crit_support" : 1,
+            "max_conn" : 3,
+            "packet_size" : 3,
+            "packet_loss" : 3,
+            "latency" : 3,
+            "reliability" : 4,
+            "mobility" : 4
+        },
+        "rel_low_lat" : {
+            "delay" : 0,
+            "periodicity" : 3,
+            "throughput" : 2,
+            "energy_eff" : 0,
+            "mission_crit_support" : 5,
+            "max_conn" : 1,
+            "packet_size" : 1,
+            "packet_loss" : 4,
+            "latency" : 5,
+            "reliability" : 5,
+            "mobility" : 3
+        },
+        "mach_to_mach" : {
+            "delay" : 1,
+            "periodicity" : 2,
+            "throughput" : 1,
+            "energy_eff" : 2,
+            "mission_crit_support" : 3,
+            "max_conn" : 2,
+            "packet_size" : 1,
+            "packet_loss" : 4,
+            "latency" : 4,
+            "reliability" : 4,
+            "mobility" : 4
+        },
+        "NoSlice" : {
+            "delay" : 0,
+            "periodicity" : 0,
+            "throughput" : 0,
+            "energy_eff" : 0,
+            "mission_crit_support" : 0,
+            "max_conn" : 0,
+            "packet_size" : 0,
+            "packet_loss" : 0,
+            "latency" : 0,
+            "reliability" : 0,
+            "mobility" : 0
+        }
+    },
+
+    "nodes" : [
+          ],
+
+    "edges" :  [
+
+           ]
+}
