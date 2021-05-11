@@ -50,17 +50,12 @@ void close_window(Display *dis, Window& win, GC& gc) {
 
 void hold_window(Display *dis, Window& win, XEvent event)
 {
-<<<<<<< HEAD
 	char holdString[256];
 	XCheckWindowEvent(dis, win, 0, &event);
 	std::cin>>holdString;
 	XClearWindow(dis, win);
 	XCheckWindowEvent(dis, win, 0, &event);
 	std::cout<<"NEXT NODE\n\n\n";
-=======
-	std::string buffer = "";
-	std::cin>>buffer; //Waits until first input then exits, could honestly just put this in main
->>>>>>> 404d5b2cbcfeabb0ecc5e23c3182f35ca2be533c
 }
 
 void draw_graph(Display *dis, Window win, GC gc, Graph graph, const std::string graphName)
