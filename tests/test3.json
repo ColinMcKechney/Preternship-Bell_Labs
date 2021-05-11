@@ -1,0 +1,197 @@
+{
+    "priorities" : {
+        "mob_bband" : {
+            "delay" : 0,
+            "periodicity" : 2,
+            "throughput" : 3,
+            "energy_eff" : 3,
+            "mission_crit_support" : 1,
+            "max_conn" : 3,
+            "packet_size" : 3,
+            "packet_loss" : 3,
+            "latency" : 3,
+            "reliability" : 4,
+            "mobility" : 4
+        },
+        "rel_low_lat" : {
+            "delay" : 0,
+            "periodicity" : 3,
+            "throughput" : 2,
+            "energy_eff" : 0,
+            "mission_crit_support" : 5,
+            "max_conn" : 1,
+            "packet_size" : 1,
+            "packet_loss" : 4,
+            "latency" : 5,
+            "reliability" : 5,
+            "mobility" : 3
+        },
+        "mach_to_mach" : {
+            "delay" : 1,
+            "periodicity" : 2,
+            "throughput" : 1,
+            "energy_eff" : 2,
+            "mission_crit_support" : 3,
+            "max_conn" : 2,
+            "packet_size" : 1,
+            "packet_loss" : 4,
+            "latency" : 4,
+            "reliability" : 4,
+            "mobility" : 4
+        },
+        "NoSlice" : {
+            "delay" : 0,
+            "periodicity" : 0,
+            "throughput" : 0,
+            "energy_eff" : 0,
+            "mission_crit_support" : 0,
+            "max_conn" : 0,
+            "packet_size" : 0,
+            "packet_loss" : 0,
+            "latency" : 0,
+            "reliability" : 0,
+            "mobility" : 0
+        }
+    },
+
+    "nodes" : [
+        {
+            "name":0,
+            "priority" : 0
+
+        },
+
+        {
+            "name":1,
+            "priority" : 2
+
+        },
+        {
+            "name":2,
+            "priority" : 1
+
+        },
+
+        {
+            "name":3,
+            "priority" : 3
+
+        },
+        {
+            "name":4,
+            "priority" : 0
+
+        },
+
+        {
+            "name":5,
+            "priority" : 2
+
+        },
+        {
+            "name":6,
+            "priority" : 1
+
+        },
+
+        {
+            "name":7,
+            "priority" : 3
+
+        },
+		{
+            "name":8,
+            "priority" : 2
+
+        },
+        {
+            "name":9,
+            "priority" : 1
+
+        },
+
+        {
+            "name":10,
+            "priority" : 3
+
+        }
+    ],
+
+    "edges" :  [
+        {
+            "source" : 0,
+            "destination" : 1,
+            "slice_type" : 1
+        },
+        {
+            "source" : 2,
+            "destination" : 0,
+            "slice_type" : 1
+        },
+        {
+            "source" : 1,
+            "destination" : 3,
+            "slice_type" : 0
+        },
+
+        {
+            "source" : 3,
+            "destination" : 4,
+            "slice_type" : 2
+        },
+        {
+            "source" : 0,
+            "destination" : 5,
+            "slice_type" : 1
+        },
+        {
+            "source" : 2,
+            "destination" : 6,
+            "slice_type" : 1
+        },
+        {
+            "source" : 1,
+            "destination" : 7,
+            "slice_type" : 0
+        }, 
+		{
+            "source" : 9,
+            "destination" : 7,
+            "slice_type" : 1
+        },
+        {
+            "source" : 6,
+            "destination" : 8,
+            "slice_type" : 1
+        },
+        {
+            "source" : 10,
+            "destination" : 3,
+            "slice_type" : 0
+        },
+
+        {
+            "source" : 9,
+            "destination" : 10,
+            "slice_type" : 2
+        },
+        {
+            "source" : 4,
+            "destination" : 8,
+            "slice_type" : 1
+        },
+        {
+            "source" : 8,
+            "destination" : 2,
+            "slice_type" : 1
+        },
+        {
+            "source" : 5,
+            "destination" : 10,
+            "slice_type" : 0
+        }
+
+
+    ]
+}
+   

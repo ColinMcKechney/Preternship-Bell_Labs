@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <sstream>
 #include <cstdlib>
+#include <cctype>
 
 using json = nlohmann::json;
 
@@ -66,29 +67,30 @@ int main(int argc, char *argv[]){
     for(std::unordered_map<std::string,int> e : j["edges"].get<std::vector<std::unordered_map<std::string,int>>>()){
         
         g.addEdge({e["slice_type"], slice_types[getSlice(e["slice_type"])], &g.verticies[e["source"]] , &g.verticies[e["destination"]]});
-
+        g.addEdge({e["slice_type"], slice_types[getSlice(e["slice_type"])], &g.verticies[e["destination"]] , &g.verticies[e["source"]]});
     } 
     std::cout << g << std::endl;
     
-    //for testing purposes only
 
-    //TODO run mst algorithm for each node
-    int startNode =0;
-    scanf("%d",&startNode);
     Window win;
     GC gc;
     Display *dis = create_window(win,gc);
+	XEvent event;
+    //TODO run mst algorithm for each node
+    int startNode =0;
+	std::string inputBuffer;
+	std::cin>>inputBuffer;
+	startNode = (isdigit(inputBuffer[0]) ? std::stoi(inputBuffer) : -1);
     while(startNode >= 0 && startNode < g.vertexCount){ 
         Graph mst = g.MST(startNode);
-        draw_graph(dis,win,gc,mst);
-        hold_window(dis,win);
-        Graph mst2 = g.MST2();
-        draw_graph(dis,win,gc,mst2);
-        hold_window(dis,win);
-        draw_graph(dis,win,gc,g);
-        hold_window(dis,win);
-        std::cout << mst << std::endl; 
-        scanf("%d",&startNode);  
+        draw_graph(dis,win,gc,g, "Original Graph");
+        hold_window(dis,win,event);
+		std::cout<<mst<<"\n\n\n\n\n";
+        draw_graph(dis,win,gc,mst, "Minimized Graph");
+        hold_window(dis,win,event);
+		std::string inputBuffer;
+		std::cin>>inputBuffer;
+		startNode = (isdigit(inputBuffer[0]) ? std::stoi(inputBuffer) : -1);
     } 
     close_window(dis,win,gc);
 }

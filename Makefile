@@ -16,8 +16,8 @@ EXE = exe
 
 
 # Test to see if edges are working
-test: driver
-	$(EXE)/driver $(TEST)/test.json
+MST: driver
+	$(EXE)/driver $(TEST)/test5.json
 
 driver : $(OBJ)/driver.o
 	$(PP) $(CXXFLAGS) -o exe/$@ $< -I single_include

@@ -172,7 +172,6 @@ class Graph
 			return graph_out;
 		}
 		
-		//Prims only purpose is if there isn't an overlying structure, it's up to the group whether we keep it or not
 		Graph MST2()
 		{
 			Graph graph_out;
