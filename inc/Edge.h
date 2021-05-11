@@ -39,10 +39,9 @@ struct Edge
 		double weight_NoSlice() const 
 		{
 			std::cout<<"No Slice Type Selected";
-			return 0;
+			return 999;
 		}
 		//Functions that calculate the weight of the edge, simplified for now
-			//needs proper investigation once simulation is completed 
 		double weight_Broadband() const
 		{	
 			return param.at("delay") + param.at("periodicity") + (param.at("throughput") ? 1.0/param.at("throughput") : 2) + (param.at("energy_eff") ? 1.0/param.at("energy_eff") : 2) + param.at("mission_crit_support") + (param.at("max_conn") ? 1.0/param.at("max_conn") : 2 ) + (param.at("packet_size") ? 1.0/param.at("packet_size") : 2) + (param.at("packet_loss")) + param.at("latency") + (param.at("reliability")) + (param.at("mobility") ? 1.0/param.at("mobility") : 2);
@@ -70,48 +69,24 @@ struct Edge
 		//Simple accessor of weight variable
 		double getWeight() const
 		{
-			return weight;
+			return getWeight(sliceType);
 		}
 		//Gets the weight according to the slice type specified and switch the saved type to this
-		double getWeight(const NetworkSliceType type)
+		double getWeight(const NetworkSliceType type) const
 		{
-			sliceType = type;
-			switch(type)
-			{
-				case NetworkSliceType::Broadband:
-					weight = weight_Broadband();
-					break;
-				case NetworkSliceType::LowLat:
-					weight = weight_LowLat();
-					break;
-				case NetworkSliceType::Mach_to_mach:
-					weight = weight_mach_to_mach();
-					break;
-				case NetworkSliceType::NoSlice:
-				default:
-					weight = weight_NoSlice();
-					break;
-			}
-			return weight;
-		}
-
-		double gettmpWeight(const NetworkSliceType type)const {
 			switch(type)
 			{
 				case NetworkSliceType::Broadband:
 					return weight_Broadband();
-					break;
 				case NetworkSliceType::LowLat:
 					return weight_LowLat();
-					break;
 				case NetworkSliceType::Mach_to_mach:
 					return weight_mach_to_mach();
-					break;
 				case NetworkSliceType::NoSlice:
 				default:
 					return weight_NoSlice();
-					break;
 			}
+			return weight;
 		}
 		
 		//Output overload
@@ -127,23 +102,23 @@ struct Edge
 		//Overloaded operators
 		bool operator<(const Edge& edge_in) const
 		{
-			return getWeight() < edge_in.gettmpWeight(this->sliceType);
+			return getWeight() < edge_in.getWeight(this->sliceType);
 		}
 		bool operator>(const Edge& edge_in) const
 		{
-			return getWeight() > edge_in.gettmpWeight(this->sliceType);
+			return getWeight() > edge_in.getWeight(this->sliceType);
 		}
 		bool operator==(const Edge& edge_in) const
 		{
-			return getWeight() == edge_in.gettmpWeight(this->sliceType);
+			return getWeight() == edge_in.getWeight(this->sliceType);
 		}
 		bool operator<=(const Edge& edge_in) const
 		{
-			return !(getWeight() > edge_in.gettmpWeight(this->sliceType));
+			return !(getWeight() > edge_in.getWeight(this->sliceType));
 		}
 		bool operator>=(const Edge& edge_in) const
 		{
-			return !(getWeight() < edge_in.gettmpWeight(this->sliceType));
+			return !(getWeight() < edge_in.getWeight(this->sliceType));
 		}
 		//IsSame is used to identify exact same edges that aren't the same object, for unique edges in nodes
 		bool isSame(const Edge& edge_in) const

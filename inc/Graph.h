@@ -37,20 +37,20 @@ class Graph
 		}
 		
 		//Adds an edge with various overloads for ease of use
-		void addEdge(Edge edge_in)
+		void addEdge(const Edge edge_in)
 		{
 			getNode((edge_in.beginning)->node_id)->addEdge(edge_in);
 		}
-		void addEdge(Edge edge_in, Node* start)
+		void addEdge(const Edge edge_in, const Node* start)
 		{
 			verticies[start->node_id].addEdge(edge_in);
 		}
-		void addEdge(Edge edge_in, unsigned int start)
+		void addEdge(const Edge edge_in, const unsigned int start)
 		{
 			verticies[start].addEdge(edge_in);
 		}
 		//addEdgeDouble creates a double sided node instead of a single
-		void addEdgeDouble(const Edge edge_in, int start, int end)
+		void addEdgeDouble(const Edge edge_in, const int start, const int end)
 		{
 			Edge newEdge1 = edge_in;
 			newEdge1.destination = &verticies[end];
@@ -58,23 +58,18 @@ class Graph
 			Edge newEdge2 = edge_in;
 			newEdge2.destination = &verticies[start];
 			verticies[end].addEdge(newEdge2);
-			//std::cout<<"\nAdding edge:\n";
-			//std::cout<<newEdge1;
-			//std::cout<<"\n\n";
 		}
 		//addEdgeMST creates a single sided node for visualization purposes
-		void addEdgeMST(const Edge edge_in, int start, int end)
+		void addEdgeMST(const Edge edge_in, const int start, const int end)
 		{
 			Edge newEdge1 = edge_in;
 			newEdge1.destination = &verticies[end];
 			verticies[start].addEdge(newEdge1);
-			//std::cout<<"\nAdding edge:\n";
-			//std::cout<<newEdge1;
-			//std::cout<<"\n\n";
 		}
 		
 		//Calculates and returns a new graph with minimized path weight between nodes
-		Graph MST(int startNode){
+		Graph MST(const int startNode) const
+		{
 			Graph graph_out;
 			//First, reinitialize all the existing nodes in the new graph
 
@@ -118,7 +113,6 @@ class Graph
 					std::cout<<"Checking edge ("<<e.beginning->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
 					if(lowestWeights[nodeId] > e.getWeight())
 					{
-						std::cout<<"Lower than "<<lowestWeights[nodeId]; //Verbose testing
 						lowestWeights[nodeId] = e.getWeight();
 						edgeLowest = e;
 					}
@@ -142,7 +136,6 @@ class Graph
 				}
 				//Checks for the next node to use
 				Edge topEdge;
-				std::cout<<"Nodes: "<<(!prioQueue.empty() ? "Not Empty" : "Empty")<<"\n\n\n\n";
 				int oldNode = currentNode.node_id;
 				while(!prioQueue.empty() && visited[currentNode.node_id]) //Continue until there is no more PQ or finds a node that hasn't been visited
 				{
@@ -151,9 +144,9 @@ class Graph
 					currentNode = verticies[topEdge.destination->node_id];
 					std::cout<<"\nTrying to check node "<<currentNode.node_id<<std::endl; //Verbose testing
 				}
-				if(currentNode.node_id == oldNode) //If there is no new nodes in the prioQueue, then we're all done! (Technically not needed but used for testing purposes
+				if(currentNode.node_id == oldNode) //If there is no new nodes in the prioQueue, then we're all done!
 				{
-					std::cout<<"Couldn't find a free node!";
+					std::cout<<"Couldn't find a free node, all done!\n";
 					break;
 				}
 				std::cout<<"\nIs node "<<currentNode.node_id<<" visited?: "<<visited[currentNode.node_id]<<std::endl; //Verbose testing
@@ -172,86 +165,7 @@ class Graph
 			return graph_out;
 		}
 		
-		Graph MST2()
-		{
-			Graph graph_out;
-			
-			for(Node n : verticies)
-			{
-				graph_out.addBlankNode(n);
-			}
-			
-			//Map of all the edges that will be used in the final graph
-			std::unordered_map<int, Edge> finalEdges;
-			double lowestWeight;
-			for(Node currentNode : verticies)
-			{
-				std::cout<<std::endl<<"Current Node: "<<currentNode<<std::endl; //Verbose testing
-				lowestWeight = 2147483647;
-				int nodeId = currentNode.node_id;
-				Edge edgeLowest;
-				for(Edge e : currentNode.node_edges)
-				{
-					std::cout<<"Checking edge ("<<e.beginning->node_id<<" to "<<e.destination->node_id<<")\n"; //Verbose testing
-					if(lowestWeight > e.getWeight())
-					{
-						lowestWeight = e.getWeight();
-						edgeLowest = e;
-					}
-				}
-				finalEdges[nodeId] = edgeLowest;
-			}
-			for(int i = 0; i < vertexCount; i++)
-			{
-				if(finalEdges.count(i) != 0)
-				{
-					graph_out.addEdgeMST(finalEdges.at(i), i, (finalEdges.at(i).destination)->node_id);
-				} else
-				{
-					std::cout<<"Does not contain an edge with node "<<i<<std::endl; //Verbose testing
-				}
-			}
-			return graph_out;
-		}
-
-		/*
-		Graph MST(int start){
-			Graph newGraph; //create new graph
-			std::priority_queue<Edge> queue; //priority queue of edges
-			std::vector<bool> mstSet(vertexCount); //what nodes have been visited 
-			
-			mstSet[start] = true;
-			newGraph.addBlankNode(*getNode(start)); //add first node
-
-			for(Edge e : verticies[start].node_edges){ //add edges coming from initial node
-				if(!mstSet[e.destination->node_id])
-					queue.push(e);
-			}
-
-			while(newGraph.vertexCount<vertexCount){
-
-				Edge edg = queue.top(); //get info about top edge
-				queue.pop(); //remove top edge from queue
-				if(mstSet[edg.destination->node_id]) //if top edge is to a node that has already been visited, continue
-					continue;
-
-				newGraph.addEdge(edg); //add the edge to the new graph --------- This function can't be used with two different graphs as it's looking at nodes that are on the original graph
-				newGraph.addBlankNode({edg.destination->node_id, edg.destination->priority}); //add the destination node to the new graph
-
-				mstSet[edg.destination->node_id] = true; //mark the destination node as visited
-
-				for(Edge e : edg.destination->node_edges){ //get the destination node's edges and add them to the priority queue
-					if(!mstSet[e.destination->node_id])
-						queue.push(e);
-				}
-				
-			}
-
-			return newGraph;
-
-		} */
-
-		Node* getNode(int node_id){
+		Node* getNode(const int node_id){
 			//finds node based on node_id and returns a pointer to it
 			for(size_t x =0; x<verticies.size(); x++){
 				if(node_id == verticies[x].node_id)
@@ -259,8 +173,6 @@ class Graph
 			}
 			return NULL;
 		}
-
-
 
 		//Output overload
 		friend std::ostream& operator<<(std::ostream& output, const Graph& graph_in)

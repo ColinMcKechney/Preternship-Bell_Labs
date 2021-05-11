@@ -76,7 +76,6 @@ int main(int argc, char *argv[]){
     GC gc;
     Display *dis = create_window(win,gc);
 	XEvent event;
-    //TODO run mst algorithm for each node
     int startNode =0;
 	std::string inputBuffer;
 	std::cin>>inputBuffer;

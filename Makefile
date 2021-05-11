@@ -1,5 +1,3 @@
-# This is the Makefile for the CSE 20312 course - Lab 06
-
 # G++ is for the GCC compiler for C++
 PP := g++
 
@@ -16,59 +14,16 @@ EXE = exe
 
 
 # Test to see if edges are working
-MST: driver
-	$(EXE)/driver $(TEST)/test5.json
+MST: MSTEXE
+	$(EXE)/MSTEXE $(TEST)/test1.json
 
-driver : $(OBJ)/driver.o
+MSTEXE : $(OBJ)/main.o
 	$(PP) $(CXXFLAGS) -o exe/$@ $< -I single_include
 
 $(OBJ)/%.o : $(SRC)/%.cpp
 	$(PP) $(CXXFLAGS) -c -o $@ $< -I single_include
 
-
-EdgeTestObjs := $(OBJ)/EdgeTest.o 
-
-EdgeTest: $(EdgeTestObjs)
-	$(PP) $(CXXFLAGS) -o $(EXE)/EdgeTest $(EdgeTestObjs)
-	$(EXE)/./EdgeTest
-
-#$(OBJ)/EdgeTest.o: $(SRC)/EdgeTest.cpp
-# $(PP) $(CXXFLAGS) -c $(SRC)/EdgeTest.cpp -o $@
-	
-# Test to see if graphs are working
-GraphTestObjs := $(OBJ)/GraphTest.o 
-
-GraphTest: $(GraphTestObjs)
-	$(PP) $(CXXFLAGS) -o $(EXE)/GraphTest $(GraphTestObjs)
-	./$(EXE)/GraphTest
-
-#$(OBJ)/GraphTest.o: $(SRC)/GraphTest.cpp
-#	$(PP) $(CXXFLAGS) -c $(SRC)/GraphTest.cpp -o $@
-	
-# Test to see if graphics work
-GraphicsTestObjects := $(OBJ)/GraphicsTest.o
-
-GraphicsTest: $(GraphicsTestObjects)
-	$(PP) $(CXXFLAGS) $(GraphicsTestObjects) -o $(EXE)/GraphicsTest
-	./$(EXE)/GraphicsTest
-
-$(OBJ)/GraphicsTest.o: $(SRC)/GraphicsTest.cpp
-	$(PP) $(CXXFLAGS) -c $(SRC)/GraphicsTest.cpp -o $@
-	
-# Test to see if graphics work
-FinalTest := $(OBJ)/FinalT.o
-
-FinalT: $(FinalTest)
-	$(PP) $(CXXFLAGS) $(FinalTest) -o $(EXE)/FinalT
-	./$(EXE)/FinalT tests/test.json
-
-$(OBJ)/FinalT.o: $(SRC)/driver.cpp
-	$(PP) $(CXXFLAGS) -c $(SRC)/driver.cpp -o $@
-	
-
-
 # make initialize
-# Will be called by grader to initialize your objects and executables folders
 initialize: 
 	mkdir $(OBJ) $(EXE)
 	
